@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const https = require("https");
+const apiKey = "43fe95bb730f63e7fd26c8caa8225e0b";
 app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/page.html");
@@ -12,7 +13,7 @@ app.post("/", function (req, res) {
   const cityName = req.body.cityName;
   const stateCode = req.body.stateCode;
   const countryCode = req.body.countryCode;
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName},${stateCode},${countryCode}&appid=43fe95bb730f63e7fd26c8caa8225e0b`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName},${stateCode},${countryCode}&appid=${apiKey}`;
   https.get(url, function (response) {
     response.on("data", function (data) {
       const jsondata = JSON.parse(data);
@@ -26,6 +27,7 @@ app.post("/", function (req, res) {
       res.write(`<p>The weather description is ${des} </p>`);
       res.write("<img src=" + imageurl + ">");
       res.send();
+      console.log(temp);
     });
   });
 });
